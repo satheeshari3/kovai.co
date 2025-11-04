@@ -1,0 +1,59 @@
+Technical Report – SARIMA Model for Time Series Forecasting
+
+For this project, I used the SARIMA (Seasonal Autoregressive Integrated Moving Average) model to forecast passenger counts for local and school bus services. The data showed both trends and seasonal patterns, which made SARIMA a good choice since it can handle both aspects effectively.
+
+Understanding the Model
+
+SARIMA is basically an advanced version of ARIMA that also considers seasonality — meaning it looks at repeating patterns over fixed time periods (for example, weekly or monthly cycles).
+The model is written as:
+
+SARIMA(p, d, q)(P, D, Q, s)
+
+Here’s what each part means:
+
+p – how many past observations are used (autoregressive part)
+
+d – how many times the data is differenced to remove trends
+
+q – how many past forecast errors are used (moving average part)
+
+P, D, Q – the same idea but for the seasonal part of the data
+
+s – the length of one seasonal cycle (for example, 12 for monthly data)
+
+Model Setup
+
+I built the model using the SARIMAX function from the statsmodels library in Python.
+After experimenting with a few parameter combinations, I found that (1,1,1)(1,1,1,12) gave the best results for my dataset.
+
+model = SARIMAX(train, order=(1,1,1), seasonal_order=(1,1,1,12))
+results = model.fit()
+
+
+This setup helped capture both short-term changes and the overall monthly seasonality in the data.
+
+Model Performance
+
+To check how well the model performed, I used:
+
+MAE (Mean Absolute Error) – measures average prediction error
+
+RMSE (Root Mean Square Error) – gives more weight to large errors
+
+For example, for the Local Route data:
+
+MAE ≈ 7770.19
+
+RMSE ≈ 8901.87
+
+These numbers show that the model predicted the overall trend quite well, with small deviations during some seasonal peaks.
+
+Why I Chose SARIMA
+
+I picked SARIMA because:
+
+It can model both trend and seasonality, which is common in transport data.
+
+It works well for single-variable forecasting like passenger count.
+
+It gives reliable future forecasts with confidence intervals.
